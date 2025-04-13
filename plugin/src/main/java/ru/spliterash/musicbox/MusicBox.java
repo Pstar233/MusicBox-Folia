@@ -31,17 +31,21 @@ import java.util.stream.Collectors;
 public final class MusicBox extends JavaPlugin {
     @Getter
     private static MusicBox instance;
+    public static MusicBox plugin;
     private MusicBoxConfig configObject;
     private boolean loaded = false;
     private Metrics bStats;
 
     @Override
     public void onEnable() {
+        plugin = this;
         instance = this;
         saveDefaultValues();
         registerCommand("musicbox", new MusicBoxExecutor());
         Bukkit.getPluginManager().registerEvents(new Handler(), this);
-        Bukkit.getScheduler().runTaskAsynchronously(this, this::reloadPlugin);
+        Bukkit.getAsyncScheduler().runNow(this, task -> {
+            this.reloadPlugin();
+        });
     }
 
     public void sendMessage(String pex, String noPexMessage, String message) {

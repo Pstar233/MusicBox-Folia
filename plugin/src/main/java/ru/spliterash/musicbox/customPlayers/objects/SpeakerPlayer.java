@@ -1,7 +1,9 @@
 package ru.spliterash.musicbox.customPlayers.objects;
 
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -28,7 +30,7 @@ public class SpeakerPlayer extends EntitySongPlayer implements PlayerSongPlayer,
     private final MusicBoxSongPlayerModel musicBoxModel;
     private final PlayerPlayerModel model;
     private final RangePlayerModel rangeModel;
-    private final BukkitTask task;
+    private final ScheduledTask task;
     private final PlayerWrapper owner;
 
     public SpeakerPlayer(IPlayList list, PlayerWrapper wrapper) {
@@ -41,23 +43,19 @@ public class SpeakerPlayer extends EntitySongPlayer implements PlayerSongPlayer,
         setRange(MusicBox.getInstance().getConfigObject().getSpeakerRadius());
 
         musicBoxModel.runPlayer();
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                while (!isDestroyed()) {
-                    rangeModel.tick();
-                    try {
-                        //noinspection BusyWait
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        break;
-                    }
+        task = Bukkit.getAsyncScheduler().runNow(MusicBox.getInstance(), t ->{
+            while (!isDestroyed()) {
+                rangeModel.tick();
+                try {
+                    //noinspection BusyWait
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
                 }
             }
-        }.runTaskAsynchronously(MusicBox.getInstance());
+        });
     }
-
     @Override
     public void destroy() {
         if (!isDestroyed()) {
