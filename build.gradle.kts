@@ -9,6 +9,7 @@ plugins {
 bukkit {
     name = "MusicBox"
     main = "ru.spliterash.musicbox.MusicBox"
+    foliaSupported = true
     apiVersion = "1.13"
     authors = listOf("Spliterash")
     depend = listOf("NoteBlockAPI")
@@ -33,6 +34,7 @@ allprojects {
         maven("https://jitpack.io")
         maven("https://repo.codemc.org/repository/maven-public")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://oss.sonatype.org/content/groups/public/")
         maven("https://repo.clojars.org/")
     }
@@ -56,17 +58,6 @@ dependencies {
     api(project(":plugin"))
     api(project(":nms"))
     api(project(":nms:shared"))
-    api(project(":nms:versions:12"))
-    api(project(":nms:versions:13-16"))
-    api(project(":nms:versions:17"))
-    api(project(":nms:versions:18"))
-    api(project(":nms:versions:19_2", "reobf"))
-    api(project(":nms:versions:19_3", "reobf"))
-    api(project(":nms:versions:19_4", "reobf"))
-    api(project(":nms:versions:20_1", "reobf"))
-    api(project(":nms:versions:20_2", "reobf"))
-    api(project(":nms:versions:20_3", "reobf"))
-    api(project(":nms:versions:20_5", "reobf"))
     api(project(":nms:versions:21", "reobf"))
     api(project(":nms:versions:21_2", "reobf"))
 }
